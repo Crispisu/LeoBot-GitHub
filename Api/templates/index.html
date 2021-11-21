@@ -1,0 +1,18 @@
+<html>
+    <head>
+        <script src="Scripts/chatHistory.js"></script>
+        <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+    </head>
+    <body>
+        <div id="appContainer" style="height: 650; width: 850px; border: 2px solid black;">
+            <div id="gameContainer" style="height: 400px; width: 800px; border: 2px solid black; margin: 5px">
+            </div>
+            <div id="chatHistoryContainer" style="height: 190px; width: 790px; border: 2px solid black; margin: 5px; overflow-y: auto; padding: 5px;">
+            </div>
+            <span>
+                <input id="userMessage" onkeydown="sendMessageEvent(event)" style="width: 400px; margin: 5px" />
+                <button onclick="sendMessage()">Send</button>
+            </span>
+        </div>
+    </body>
+</html>
