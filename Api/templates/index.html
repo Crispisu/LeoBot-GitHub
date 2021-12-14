@@ -1,18 +1,36 @@
 <html>
     <head>
-        <script src="Scripts/chatHistory.js"></script>
+        <script src="Scripts/szondiController.js"></script>
         <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
     </head>
     <body>
-        <div id="appContainer" style="height: 650; width: 850px; border: 2px solid black;">
-            <div id="gameContainer" style="height: 400px; width: 800px; border: 2px solid black; margin: 5px">
+        <div id="appContainer" style="height: 650; width: 850px; margin: auto;">
+            <div id="gameContainer" style="display: none; height: 600px; width: 800px; border: 2px solid black; margin: 5px">
             </div>
-            <div id="chatHistoryContainer" style="height: 190px; width: 790px; border: 2px solid black; margin: 5px; overflow-y: auto; padding: 5px;">
+            <div id="welcomeSection" style="display: block; text-align: center;"> 
+                <h1>Welcome to the Szondi Test !</h1>
+                <table style="width: 100%;">
+                    <tr>
+                        <td style="width: 50%; height: 300px; text-align: center;">
+                            <div onclick="newPatient()" style="margin: auto; height: 50%; width: 50%; background-color: lightblue; padding: 55px 0;">
+                                New Patient? <br/>
+                                Click here
+                            </div>
+                        </td>
+                        <td style="width: auto; height: 300px; text-align: center;">
+                            Existing Patient? <br />
+                            Please type your Patient ID to resume: 
+                            <span>
+                                <input id="returning" onkeydown="returningPatientEvent(event)"/>
+                                <button onclick="returningPatient()">-></button>
+                            </span>
+                        </td>
+                    </tr>
+                </table>
             </div>
-            <span>
-                <input id="userMessage" onkeydown="sendMessageEvent(event)" style="width: 400px; margin: 5px" />
-                <button onclick="sendMessage()">Send</button>
-            </span>
+            <div id = "testFinished" style="display: none; width: 100%; height: 300px; text-align: center;">
+                We're sorry. You've reached the maximum number of sessions. Please wait patiently for your result!
+            </div>
         </div>
     </body>
 </html>
