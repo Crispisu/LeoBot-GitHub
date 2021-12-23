@@ -90,9 +90,17 @@ function drawCards(set)
 {
     for (let i = 0; i < set.length; i++)
     {
-        $('#gameContainer').prepend(`<img id="${set[i]}" src="Content/Cards/${set[i]}.png" onclick="saveSelection('${set[i]}')" />`)
+        $(`#card${i}`).prepend(`<img id="${set[i]}" src="Content/Cards/${set[i]}.png" onclick="saveSelection('${set[i]}')" />`)
     }
     alert("Pick 2 likeable");
+}
+
+function emptyCardHolders()
+{
+    for (let i = 0; i < 8; i++)
+    {
+        $(`#card${i}`).empty();
+    }
 }
 
 function saveSelection(id)
@@ -111,7 +119,7 @@ function saveSelection(id)
             break;
         case 4:
             selectedCards.Draw_1_A_2 = id;
-            $('#gameContainer').empty();
+            emptyCardHolders();
             drawCards(cards.set2);
             break;
         case 5:
@@ -126,7 +134,7 @@ function saveSelection(id)
             break;
         case 8:
             selectedCards.Draw_2_A_2 = id;
-            $('#gameContainer').empty();
+            emptyCardHolders();
             drawCards(cards.set3);
             break;
         case 9:
@@ -141,7 +149,7 @@ function saveSelection(id)
             break;
         case 12:
             selectedCards.Draw_3_A_2 = id;
-            $('#gameContainer').empty();
+            emptyCardHolders();
             drawCards(cards.set4);
             break;
         case 13:
@@ -156,7 +164,7 @@ function saveSelection(id)
             break;
         case 16:
             selectedCards.Draw_4_A_2 = id;
-            $('#gameContainer').empty();
+            emptyCardHolders();
             drawCards(cards.set5);
             break;
         case 17:
@@ -171,7 +179,7 @@ function saveSelection(id)
             break;
         case 20:
             selectedCards.Draw_5_A_2 = id;
-            $('#gameContainer').empty();
+            emptyCardHolders();
             drawCards(cards.set6);
             break;
         case 21:
@@ -186,7 +194,7 @@ function saveSelection(id)
             break
         case 24:
             selectedCards.Draw_6_A_2 = id;
-            $('#gameContainer').empty();
+            emptyCardHolders();
             saveResults();
             break;
     }
@@ -209,9 +217,9 @@ function saveResults()
         dataType: 'json',
         async: false,
         data: JSON.stringify(request),
-        success: function () {
+        success: function (data) {
             $('#gameContainer').empty();
-            alert("You have completed this session. Thanks!")
+            alert("You have completed this session. Thanks!");
         },
         error: function(error) {console.log(error)}
     })

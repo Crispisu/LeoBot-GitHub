@@ -66,9 +66,9 @@ def SaveResults():
     cardsDictionary = ResultsDictionary['cards']
     selectionValues = cardsDictionary.values()
     accessor = DbAccessor()
-    accessor.add_session(list(selectionValues), patient_ID)
-    accessor.calc_int_results(cardsDictionary)
-    return 'OK', 200
+    session_id = accessor.add_session(list(selectionValues), patient_ID)
+    accessor.calc_int_result(cardsDictionary, session_id)
+    return jsonify({'response': 'OK'}), 200
 
 
 

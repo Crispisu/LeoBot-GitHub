@@ -5,7 +5,7 @@ from datetime import date, datetime
 class DbAccessor:
     
     def __init__(self):
-        self.database = 'Api/AppData/SZData.db'
+        self.database = 'AppData/SZData.db'
         self.connection = sqlite3.connect(self.database) 
 
     def add_patient(self):
@@ -33,7 +33,7 @@ class DbAccessor:
         c.execute(query, (Patient_ID,))
         row = c.fetchone()
         if row is None:
-            return False
+            return True
         last_session = datetime.strptime(row[0], '%Y-%m-%d')
         today = datetime.today()
         delta = today - last_session
@@ -74,9 +74,11 @@ class DbAccessor:
         Draw_6_A_2) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"""
         c.execute(query, selected_cards)
         self.connection.commit()
+        last_id = c.lastrowid
         c.close()
+        return last_id
 
-    def calc_int_result(self, cardsDictionary):
+    def calc_int_result(self, cardsDictionary, session_id):
         items = dict(cardsDictionary).items()
         h = []
         s = []
@@ -121,6 +123,54 @@ class DbAccessor:
                     d.append('-')
                 if str(value).__contains__('M'):
                     m.append('-')
+        h = self.calc_final_result(h)
+        s = self.calc_final_result(s)
+        e = self.calc_final_result(e)
+        hy = self.calc_final_result(hy)
+        k = self.calc_final_result(k)
+        p = self.calc_final_result(p)
+        d = self.calc_final_result(d)
+        m = self.calc_final_result(m)
+        result = [session_id, h, s, e, hy, k, p, d, m]
+        query = """insert into SessionResults (Session_ID, h, s, e, hy, k, p, d, m) 
+        values (?, ?, ?, ?, ?, ?, ?, ?, ?)"""
+        c = self.connection.cursor()
+        c.execute(query, result)
+        self.connection.commit()
+        c.close()
+
+    def calc_final_result(self, column):
+        zero = [(0,0), (1,0), (0,1), (1,1)]
+        plus = [(3,2), (4,2)]
+        minus = [(2,3), (2,4)]
+        plus_minus = [(2,2), (3,3)]
+        exclamation_plus = [(4,0), (3,0), (2,0), (2,1), (3,1), (4,1)]
+        exclamation_double_plus = [(5,0), (5,1)]
+        exclamation_triple_plus = [(6,0)]
+        exclamation_minus = [(0,4), (0,3), (0,2), (1,2), (1,3), (1,4)]
+        exclamation_double_minus = [(0,5), (1,5)]
+        exclamation_triple_minus = [(0,6)]
+        result = (list(column).count('+'),list(column).count('-'))
+        if result in zero:
+            return '0'
+        if result in plus:
+            return '+'
+        if result in minus:
+            return '-'
+        if result in plus_minus:
+            return '±'
+        if result in exclamation_plus:
+            return '+!'
+        if result in exclamation_double_plus:
+            return '+!!'
+        if result in exclamation_triple_plus:
+            return '+!!!'
+        if result in exclamation_minus:
+            return '-!'
+        if result in exclamation_double_minus:
+            return '-!!'
+        if result in exclamation_triple_minus:
+            return '-!!!'
 
                 
         
