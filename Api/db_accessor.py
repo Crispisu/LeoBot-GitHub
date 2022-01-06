@@ -1,10 +1,11 @@
 import sqlite3
+import pandas as pd
 from datetime import date, datetime
 
 class DbAccessor:
     
     def __init__(self):
-        self.database = 'Api/AppData/SZData.db'
+        self.database = 'AppData/SZData.db'
         self.connection = sqlite3.connect(self.database) 
 
     def add_patient(self):
