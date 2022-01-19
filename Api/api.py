@@ -24,6 +24,7 @@ def send_content(path):
 def NewPatient():
     accessor = DbAccessor()
     patinent_ID = accessor.add_patient()
+    accessor.close()
     response = patinent_ID
     return jsonify({'response': response}), 200
 
@@ -32,6 +33,7 @@ def CheckPatientSessions(patientId=0):
     accessor = DbAccessor()
     timer = accessor.getSessionTimer(patientId)
     session_number = accessor.getSessionCount(patientId)
+    accessor.close()
     if session_number < 6 and timer:
         return jsonify({'response': True}), 200
     else:
@@ -68,6 +70,7 @@ def SaveResults():
     accessor = DbAccessor()
     session_id = accessor.add_session(list(selectionValues), patient_ID)
     accessor.calc_int_result(cardsDictionary, session_id)
+    accessor.close()
     return jsonify({'response': 'OK'}), 200
 
 

@@ -1,27 +1,45 @@
-import sqlite3
-import pandas as pd
+import psycopg2
 from datetime import date, datetime
+import os
+import urllib.parse as urlparse
 
 class DbAccessor:
     
     def __init__(self):
-        self.database = 'AppData/SZData.db'
-        self.connection = sqlite3.connect(self.database) 
+        #self.database = 'dbname=SZData user= password='
+        #self.connection = psycopg2.connect(self.database) 
+        url = urlparse.urlparse(os.environ['DATABASE_URL'])
+        dbname = url.path[1:]
+        user = url.username
+        password = url.password
+        host = url.hostname
+        port = url.port
+
+        self.connection = psycopg2.connect(
+                            dbname=dbname,
+                            user=user,
+                            password=password,
+                            host=host,
+                            port=port
+                            )
+
+    def close(self):
+        self.connection.close()
 
     def add_patient(self):
         # jd = str(date.today())
-        query = 'insert into Patient (Join_Date) values (?)'
+        query = 'insert into "Patient" ("Join_Date") values (%s) RETURNING "ID"'
         c = self.connection.cursor()
-        # c.execute(query + '(' + str(date.today())+')')
-        c.execute(query, (date.today().strftime('%Y-%m-%d'),))
+        queryParamms = (date.today().strftime('%Y-%m-%d'),)
+        c.execute(query, queryParamms)
         self.connection.commit()
-        last_id = c.lastrowid
+        last_id = c.fetchone()[0]
         c.close()
         return last_id
 
     def getSessionCount(self, Patient_ID=0):
         c = self.connection.cursor()
-        select_session_query = 'select count(Session_no) from SZondiData where Patient_ID = ?'
+        select_session_query = 'select count("Session_no") from "SzondiData" where "Patient_ID" = %s'
         c.execute(select_session_query, (Patient_ID,))
         session_number = int(c.fetchone()[0])
         c.close()
@@ -29,9 +47,10 @@ class DbAccessor:
 
     def getSessionTimer(self, Patient_ID=0):
         c = self.connection.cursor()
-        query = """select Run_Date from SZondiData where Patient_ID = ? order by Run_Date desc limit 1"""
+        query = """select "Run_Date" from "SzondiData" where "Patient_ID" = %s order by "Run_Date" desc limit 1"""
         c.execute(query, (Patient_ID,))
         row = c.fetchone()
+        c.close()
         if row is None:
             return True
         last_session = datetime.strptime(row[0], '%Y-%m-%d')
@@ -41,7 +60,6 @@ class DbAccessor:
             return False
         else:
             return True
-        c.close()
     
 
     def add_session(self, selected_cards, Patient_ID):
@@ -51,30 +69,30 @@ class DbAccessor:
         selected_cards.insert(0, date.today().strftime('%Y-%m-%d'))
         selected_cards.insert(0, session_number)
         selected_cards.insert(0, Patient_ID)
-        query = """insert into SZondiData (Patient_ID, Session_no, Run_Date, Draw_1_S_1, Draw_1_S_2, Draw_1_A_1, Draw_1_A_2,
-        Draw_2_S_1,
-        Draw_2_S_2,
-        Draw_2_A_1,
-        Draw_2_A_2,
-        Draw_3_S_1,
-        Draw_3_S_2,
-        Draw_3_A_1,
-        Draw_3_A_2,
-        Draw_4_S_1,
-        Draw_4_S_2,
-        Draw_4_A_1,
-        Draw_4_A_2,
-        Draw_5_S_1,
-        Draw_5_S_2,
-        Draw_5_A_1,
-        Draw_5_A_2,
-        Draw_6_S_1,
-        Draw_6_S_2,
-        Draw_6_A_1,
-        Draw_6_A_2) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"""
+        query = """insert into "SzondiData" ("Patient_ID", "Session_no", "Run_Date", "Draw_1_S_1", "Draw_1_S_2", "Draw_1_A_1", "Draw_1_A_2",
+        "Draw_2_S_1",
+        "Draw_2_S_2",
+        "Draw_2_A_1",
+        "Draw_2_A_2",
+        "Draw_3_S_1",
+        "Draw_3_S_2",
+        "Draw_3_A_1",
+        "Draw_3_A_2",
+        "Draw_4_S_1",
+        "Draw_4_S_2",
+        "Draw_4_A_1",
+        "Draw_4_A_2",
+        "Draw_5_S_1",
+        "Draw_5_S_2",
+        "Draw_5_A_1",
+        "Draw_5_A_2",
+        "Draw_6_S_1",
+        "Draw_6_S_2",
+        "Draw_6_A_1",
+        "Draw_6_A_2") values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s) RETURNING "ID" """
         c.execute(query, selected_cards)
         self.connection.commit()
-        last_id = c.lastrowid
+        last_id = c.fetchone()[0]
         c.close()
         return last_id
 
@@ -132,8 +150,9 @@ class DbAccessor:
         d = self.calc_final_result(d)
         m = self.calc_final_result(m)
         result = [session_id, h, s, e, hy, k, p, d, m]
-        query = """insert into SessionResults (Session_ID, h, s, e, hy, k, p, d, m) 
-        values (?, ?, ?, ?, ?, ?, ?, ?, ?)"""
+        print(result)
+        query = """insert into "SessionResults" ("Session_ID", "h", "s", "e", "hy", "k", "p", "d", "m") 
+        values (%s, %s, %s, %s, %s, %s, %s, %s, %s)"""
         c = self.connection.cursor()
         c.execute(query, result)
         self.connection.commit()
