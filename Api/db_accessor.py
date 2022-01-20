@@ -6,8 +6,8 @@ import urllib.parse as urlparse
 class DbAccessor:
     
     def __init__(self):
-        #self.database = 'dbname=SZData user= password='
-        #self.connection = psycopg2.connect(self.database) 
+        # self.database = 'dbname=SZData user= password='
+        # self.connection = psycopg2.connect(self.database) 
         url = urlparse.urlparse(os.environ['DATABASE_URL'])
         dbname = url.path[1:]
         user = url.username

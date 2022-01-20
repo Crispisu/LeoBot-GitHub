@@ -52,6 +52,7 @@ function returningPatient()
             canContinueTest = data.response;
             if (canContinueTest == true)
             {
+                $("#ptid").text(patientId);
                 switchToTestView();
                 getCards();
             }
@@ -241,6 +242,7 @@ function newPatient()
         success: function (data) {
             patientId = data.response;
             alert("Your ID is: " + patientId + " \n Please note this down and use it in future sessions");
+            $("#ptid").text(patientId);
             switchToTestView();
             getCards();
         },
