@@ -82,6 +82,7 @@ function getCards()
         success: function (data) {
             cards = data;
             drawCards(cards.set1);
+            $("#roundInfo").text("1/6 - Pick 2 likeable");
         },
         error: function(error) {console.log(error)}
     });
@@ -114,6 +115,7 @@ function saveSelection(id)
         case 2:
             selectedCards.Draw_1_S_2 = id;
             alert("Pick 2 unlikeable");
+            $("#roundInfo").text("1/6 - Pick 2 unlikeable");
             break;
         case 3:
             selectedCards.Draw_1_A_1 = id;
@@ -122,6 +124,7 @@ function saveSelection(id)
             selectedCards.Draw_1_A_2 = id;
             emptyCardHolders();
             drawCards(cards.set2);
+            $("#roundInfo").text("2/6 - Pick 2 likeable");
             break;
         case 5:
             selectedCards.Draw_2_S_1 = id;
@@ -129,6 +132,7 @@ function saveSelection(id)
         case 6:
             selectedCards.Draw_2_S_2 = id;
             alert("Pick 2 unlikeable");
+            $("#roundInfo").text("2/6 - Pick 2 unlikeable");
             break;
         case 7:
             selectedCards.Draw_2_A_1 = id;
@@ -137,6 +141,7 @@ function saveSelection(id)
             selectedCards.Draw_2_A_2 = id;
             emptyCardHolders();
             drawCards(cards.set3);
+            $("#roundInfo").text("3/6 - Pick 2 likeable");
             break;
         case 9:
             selectedCards.Draw_3_S_1 = id;
@@ -144,6 +149,7 @@ function saveSelection(id)
         case 10:
             selectedCards.Draw_3_S_2 = id;
             alert("Pick 2 unlikeable");
+            $("#roundInfo").text("3/6 - Pick 2 unlikeable");
             break;
         case 11:
             selectedCards.Draw_3_A_1 = id;
@@ -152,6 +158,7 @@ function saveSelection(id)
             selectedCards.Draw_3_A_2 = id;
             emptyCardHolders();
             drawCards(cards.set4);
+            $("#roundInfo").text("4/6 - Pick 2 likeable");
             break;
         case 13:
             selectedCards.Draw_4_S_1 = id;
@@ -159,6 +166,7 @@ function saveSelection(id)
         case 14:
             selectedCards.Draw_4_S_2 = id;
             alert("Pick 2 unlikeable");
+            $("#roundInfo").text("4/6 - Pick 2 unlikeable");
             break;
         case 15:
             selectedCards.Draw_4_A_1 = id;
@@ -167,6 +175,7 @@ function saveSelection(id)
             selectedCards.Draw_4_A_2 = id;
             emptyCardHolders();
             drawCards(cards.set5);
+            $("#roundInfo").text("5/6 - Pick 2 likeable");
             break;
         case 17:
             selectedCards.Draw_5_S_1 = id;
@@ -174,6 +183,7 @@ function saveSelection(id)
         case 18:
             selectedCards.Draw_5_S_2 = id;
             alert("Pick 2 unlikeable");
+            $("#roundInfo").text("5/6 - Pick 2 unlikeable");
             break;
         case 19:
             selectedCards.Draw_5_A_1 = id;
@@ -182,6 +192,7 @@ function saveSelection(id)
             selectedCards.Draw_5_A_2 = id;
             emptyCardHolders();
             drawCards(cards.set6);
+            $("#roundInfo").text("6/6 - Pick 2 likeable");
             break;
         case 21:
             selectedCards.Draw_6_S_1 = id;
@@ -189,6 +200,7 @@ function saveSelection(id)
         case 22:
             selectedCards.Draw_6_S_2 = id;
             alert("Pick 2 unlikeable");
+            $("#roundInfo").text("6/6 - Pick 2 unlikeable");
             break;
         case 23:
             selectedCards.Draw_6_A_1 = id;
@@ -197,6 +209,7 @@ function saveSelection(id)
             selectedCards.Draw_6_A_2 = id;
             emptyCardHolders();
             saveResults();
+            $("#roundInfo").text("All Done!");
             break;
     }
     step++;
