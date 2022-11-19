@@ -92,7 +92,8 @@ function drawCards(set)
 {
     for (let i = 0; i < set.length; i++)
     {
-        $(`#card${i}`).prepend(`<img id="${set[i]}" src="Content/Cards/${set[i]}.png" onclick="saveSelection('${set[i]}')" />`)
+        $(`#card${i}`).text(set[i]);
+        $(`#card${i}`).prepend(`<img id="${set[i]}" src="Content/Cards/${set[i]}.png" onclick="saveSelection('${set[i]}')" />`);
     }
     alert("Pick 2 likeable");
 }
@@ -241,6 +242,7 @@ function saveResults()
 
 function newPatient()
 {
+
     // Send the data using post
     var url = "/newpatient";
 
