@@ -160,13 +160,13 @@ class DbAccessor:
 
     def calc_final_result(self, column):
         zero = [(0,0), (1,0), (0,1), (1,1)]
-        plus = [(3,2), (4,2)]
-        minus = [(2,3), (2,4)]
-        plus_minus = [(2,2), (3,3)]
-        exclamation_plus = [(4,0), (3,0), (2,0), (2,1), (3,1), (4,1)]
+        plus = [(3,0), (2,1), (2,0), (3,1)]
+        minus = [(0,2), (0,3), (1,2), (1,3)]
+        plus_minus = [(2,2), (3,3), (2, 3), (2,4), (4,2),(3,2)]
+        exclamation_plus = [(4,0), (4,1)]
         exclamation_double_plus = [(5,0), (5,1)]
         exclamation_triple_plus = [(6,0)]
-        exclamation_minus = [(0,4), (0,3), (0,2), (1,2), (1,3), (1,4)]
+        exclamation_minus = [(0,4), (1,4)]
         exclamation_double_minus = [(0,5), (1,5)]
         exclamation_triple_minus = [(0,6)]
         result = (list(column).count('+'),list(column).count('-'))
